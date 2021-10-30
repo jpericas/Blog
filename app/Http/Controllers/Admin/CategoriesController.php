@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use App\Models\Posts;
+use App\Models\Categories;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-
-class PostsController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
-        
-        $posts = Posts::paginate(6);
-        //$posts = DB::table("posts")->get();
-        
-        return view("admin.posts.index", ["posts" => $posts]);
+        $categories = Categories::all();
+        return view("admin.categories.index", 
+                ["categories" => $categories, 
+                 "titol" => "<h1>Llista de Categories</h1>"]);
     }
 
     /**
@@ -32,7 +29,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -44,26 +41,25 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:5|max:255|unique:posts'
+            'title' => 'required|min:5|max:255|unique:categories'
         ]);
-        
-        $data = $request->all();
-        $data["user_id"] = User::all()->random()->id;
-        Posts::create($data);
+ 
+        Categories::create($request->all());
 
-        return redirect('posts')->with('status', 'Sa creat el post correctament.');
+        return redirect('categories')->with('status', 'Sa creat la categoria correctament.');
 
     }
 
     /**
      * Display the specified resource.
+     * El nom de la variable ha de ser el mateix que el que ens indica la ruta
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function show(Posts $post)
+     */    
+    public function show(Categories $category)
     {
-        return view("admin.posts.show", ["post" => $post, "titol" => "<h1> Titol del post </h1>"]);
+        return view("admin.categories.show", ["categories" => $category]);
     }
 
     /**
@@ -72,9 +68,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Posts $post)
+    public function edit(Categories $category)
     {
-        return view("admin.posts.edit", ["post" => $post]);
+        return view("admin.categories.edit", ["category" => $category]);
     }
 
     /**
@@ -84,15 +80,15 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Posts $post)
+    public function update(Request $request, Categories $category)
     {
         $request->validate([
-            'title' => 'required|min:5|max:255|unique:posts'
+            'title' => 'required|min:5|max:255|unique:categories'
         ]);
         
-        $post->update($request->all());
+        $category->update($request->all());
         
-        return redirect('posts')->with('status', 'Post modificat correctement');
+        return redirect('categories')->with('status', 'Sa modificat la categoria correctament.');
     }
 
     /**
@@ -101,9 +97,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Posts $post)
+    public function destroy(Categories $category)
     {
-        $post->delete();
-        return back()->with('status', 'Sa eliminat el post correctament');
+        $category->delete();
+        return redirect('categories')->with('status', 'Sa borrat la categoria correctament');
     }
 }

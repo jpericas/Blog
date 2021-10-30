@@ -16,22 +16,18 @@
 @endsection
 
 @section('content')
-
-    @include("partials.errors")
-    <form action="{{ route('posts.store') }}" method="post" >
-    @csrf
     <div class="mb-3">
         <label for="title" class="form-label">Títol</label>
-        <input type="text" class="form-control @error('title') is-invalid @enderror"  name="title" id="title"  >
+        <input readonly type="text" class="form-control" value="{{ $post->title }}"  name="title" id="title"  >                
     </div>
     <div class="mb-3">
         <label for="url_clean" class="form-label">Url neta</label>
-        <input type="text" class="form-control" name="url_clean" id="url_clean" >
+        <input readonly type="text" class="form-control" value="{{ $post->url_clean }}" name="url_clean" id="url_clean" >
     </div>
     <div class="mb-3">
         <label for="content" class="form-label">Contingut</label>
-        <textarea class="form-control" name="content"  id="content" rows="3"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
-    </form>
+        <textarea readonly class="form-control" name="content"  id="content" rows="3">{{ $post->content }}</textarea>
+    </div>    
 @endsection
+
+

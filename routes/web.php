@@ -18,6 +18,10 @@ Route::get('/', function () {
 });
 
 
+Route::get('/about', function () {
+    return view('about');
+});
+
 Route::get('/perfil/{nom}', function ($nom) {
     return view('perfil', ['nom' => $nom]);
 });
@@ -32,6 +36,7 @@ Route::get('/posts/{post:url_clean}', function (App\Models\Posts  $post) {
 });*/
 
 Route::resource('posts', App\Http\Controllers\Admin\PostsController::class);
+Route::resource('categories', App\Http\Controllers\Admin\CategoriesController::class);
 
 Route::group(['prefix' => 'admin' , 'name' => 'admin.'] , function () {
 
@@ -44,4 +49,5 @@ Route::group(['prefix' => 'admin' , 'name' => 'admin.'] , function () {
     })->name('nosaltres');    
 
 });
+
 

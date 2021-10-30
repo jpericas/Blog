@@ -1,4 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
+.impar {
+    background-color: #f8f9fa !important;
+}
+.par {
+    background-color: #ffffff !important;
+}
 @charset "UTF-8";
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
