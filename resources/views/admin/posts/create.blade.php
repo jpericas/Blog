@@ -1,4 +1,4 @@
-@extends('layouts.primer')
+@extends('layouts.app')
 
 @section('title', 'Posts ')
 
@@ -30,7 +30,7 @@
     </div>
     <div class="mb-3">
         <label for="content" class="form-label">Contingut</label>
-        <textarea class="form-control" name="content"  id="content" rows="3"></textarea>
+        <textarea class="form-control" name="content"  id="editor" rows="3"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Crear</button>
     </form>

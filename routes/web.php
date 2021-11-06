@@ -17,14 +17,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::get('/about', function () {
     return view('about');
-});
+})->middleware('auth');
 
-Route::get('/perfil/{nom}', function ($nom) {
-    return view('perfil', ['nom' => $nom]);
+Route::middleware(['auth', 'rol'])->group(function () {
+    
+   
+    Route::get('/perfil/{nom}', function ($nom) {
+        return view('perfil', ['nom' => $nom]);
+    })->withoutMiddleware('auth');
+
 });
+  
+
+
+
+
+
+
 
 Route::get('/user/{user}', function (App\Models\User  $user) {
     dd($user);
@@ -36,6 +47,8 @@ Route::get('/posts/{post:url_clean}', function (App\Models\Posts  $post) {
 });*/
 
 Route::resource('posts', App\Http\Controllers\Admin\PostsController::class);
+Route::post('posts/{post}/edit/images',[App\Http\Controllers\Admin\PostsController::class,'image'])->name('post.image');
+
 Route::resource('categories', App\Http\Controllers\Admin\CategoriesController::class);
 
 Route::group(['prefix' => 'admin' , 'name' => 'admin.'] , function () {
@@ -51,3 +64,7 @@ Route::group(['prefix' => 'admin' , 'name' => 'admin.'] , function () {
 });
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

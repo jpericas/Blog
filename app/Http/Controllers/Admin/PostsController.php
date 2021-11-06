@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\Posts;
+use App\Models\PostImage;
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -11,6 +13,13 @@ use App\Http\Controllers\Controller;
 
 class PostsController extends Controller
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('rol');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -74,8 +83,24 @@ class PostsController extends Controller
      */
     public function edit(Posts $post)
     {
-        return view("admin.posts.edit", ["post" => $post]);
+        $categories = Categories::pluck('id', 'title');
+        return view("admin.posts.edit", ["post" => $post, 'cats' => $categories]);
     }
+
+    Public function image(Request $request, Posts $post){
+        
+        $request->validate([
+            'image' => 'required|mimes:jpeg,bmp,png|max:10240',
+        ]);
+        
+        $filename = time().".".$request->image->extension();
+        
+        $request->image->move(public_path('images'), $filename);
+
+        PostImage::create(['image' => $filename, 'post_id' => $post->id]);
+        return redirect('posts')->with('status', 'Sa afegit una imatge.');
+    }
+      
 
     /**
      * Update the specified resource in storage.
@@ -87,7 +112,7 @@ class PostsController extends Controller
     public function update(Request $request, Posts $post)
     {
         $request->validate([
-            'title' => 'required|min:5|max:255|unique:posts'
+            'title' => 'required|min:5|max:255'
         ]);
         
         $post->update($request->all());

@@ -1,4 +1,4 @@
-@extends('layouts.primer')
+@extends('layouts.app')
 
 @section('title')
     Post {{$post->title}}
@@ -40,9 +40,40 @@
             <input type="text" class="form-control" name="url_clean" value="{{$post->url_clean}}" id="url_clean" >
         </div>
         <div class="mb-3">
+            <label for="categories_id" class="form-label">Categories</label>
+            <select name="categories_id" class="form-control" >
+                @foreach ($cats as $title => $id)
+                    <option {{$post->categories_id == $id ? 'selected="selected"' : ''}} value="{{$id}}">{{$title}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="posted" class="form-label">Categories</label>
+            <select name="posted" class="form-control" >
+                @include('partials.options-yes-not', ['val' => $post->posted]);
+            </select>
+        </div>  
+        <div class="mb-3">
             <label for="content" class="form-label">Contingut</label>
-            <textarea class="form-control" name="content"  id="content" rows="3">{{$post->content}}</textarea>
+            <textarea class="form-control" name="content"  id="editor" rows="3">{{$post->content}}</textarea>
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
     </form>
+    <br>
+    @if (!$post->image)
+        <form action="{{ route("post.image",$post) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <div class="col">
+                  <input type="file" name="image" class="form-control">
+                </div>
+                <div class="col">
+                    <input type="submit" class="btn btn-primary" value="Subir">
+                </div>
+            </div>
+        </form>
+    @else
+        <img src="/images/{{$post->image->image}}" alt="">
+    @endif
+
 @endsection

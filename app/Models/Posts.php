@@ -14,5 +14,18 @@ class Posts extends Model
         'url_clean',
         'content',
         'user_id',
+        'categories_id',
+        'posted',
     ];
+
+
+    public function category()
+    {
+        return $this->belongsTo(Categories::class, 'categories_id', 'id');
+    }
+
+    public function image(){
+       return $this->hasOne(PostImage::class, 'post_id', 'id');
+    }
+
 }
