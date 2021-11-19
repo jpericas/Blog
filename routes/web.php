@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/web/{vue?}', function () {
+    return view('web.index');
+})->where('vue', '[\/\w\.-]*');
+
+
 Route::get('/', function () {
     return view('welcome');
 });

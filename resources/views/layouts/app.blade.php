@@ -86,7 +86,6 @@
                 </div>
             </div>
         </nav>
-
         <main class="container">
             <h1>@yield('title')</h1>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
